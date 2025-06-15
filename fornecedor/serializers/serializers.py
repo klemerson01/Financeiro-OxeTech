@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from fornecedor import models
+from fornecedor.models import fornecedor
 import requests
 
 
 class FornecedorSerializer(serializers.ModelSerializer):
   
     class Meta:
-        model = models.Fornecedor
+        model = fornecedor.Fornecedor
         fields = '__all__'
         extra_kwargs = {
             'logradouro': {'required': False},
@@ -32,11 +32,11 @@ class FornecedorSerializer(serializers.ModelSerializer):
 class CidadeSerializer(serializers.ModelSerializer):
   
     class Meta:
-        model = models.Cidade
+        model = fornecedor.Cidade
         fields = '__all__'
 
 class EstadoSerializer(serializers.ModelSerializer):
   
     class Meta:
-        model = models.Estado
+        model = fornecedor.Estado
         fields = '__all__'

@@ -16,14 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from fornecedor import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fornecedor.urls')),
-    path('cidade/', views.cidade_list),
-    path('estado/', views.estado_list),
-    path('fornecedor/<int:pk>/', views.fornecedor_detail),
-    path('cidade/<int:pk>/', views.cidade_detail),
-    path('estado/<int:pk>/', views.estado_detail),
 ]
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('', include('fornecedor.urls')),
+#     path('cidade/', views.cidade_list),
+#     path('estado/', views.EstadoViewSet),
+#     path('fornecedor/<int:pk>/', views.fornecedor_detail),
+#     path('cidade/<int:pk>/', views.cidade_detail),
+#     path('estado/<int:pk>/', views.estado_detail),
+# ]
