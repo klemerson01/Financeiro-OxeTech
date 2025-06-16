@@ -44,8 +44,9 @@ class Command(BaseCommand):
         
     def handle(self, *args, **options):
         fornecedores_a_criar = []
+        cnpjs_existentes = []
         # Abrir o arquivo da planilha
-        workbook = xlrd.open_workbook('teste.xls')
+        workbook = xlrd.open_workbook('fornecedores2.xls')
         # Acessar a primeira planilha
         worksheet = workbook.sheet_by_index(0)
 
@@ -62,17 +63,17 @@ class Command(BaseCommand):
             logradouro = worksheet.cell_value(row, 7)
             bairro = worksheet.cell_value(row, 8)
             numero = worksheet.cell_value(row, 9)
-            print(f"CNPJ: {cnpj} | Razao: {razao} | UF: {uf} | Estado: {estado}")
+            # print(f"CNPJ: {cnpj} | Razao: {razao} | UF: {uf} | Estado: {estado}")
 
             estado, _ = Estado.objects.get_or_create(
-                uf={uf},
-                nome={estado}
+                uf=uf,
+                nome=estado
                 # Example, adjust as needed
                 
             )
             
             cidade, _ = Cidade.objects.get_or_create(
-                nome={cidade},  # Example, adjust as needed
+                nome=cidade,  # Example, adjust as needed
                 estado=estado
             )
             
@@ -91,17 +92,21 @@ class Command(BaseCommand):
                 )
             
                 fornecedores_a_criar.append(fornecedor)
+            else:
+                cnpjs_existentes.append(str(cnpj))
             
         if fornecedores_a_criar:
             Fornecedor.objects.bulk_create(fornecedores_a_criar)
-            print("Fornecedores cadastrados")
             enviar_email.delay(
             'Fornecedores Cadastrados',
             'Olá! Seu cadastro foi um sucesso.',
             'spcomputek@gmail.com'
             )
+            print("Fornecedores cadastrados")
         else:
             print("Fornecedores ja existentes!")
+            for c in cnpjs_existentes:
+                print(f" - {c}")
             enviar_email.delay(
             'Fornecedores ja existentes',
             'Olá! Seu cadastro não foi concluido,pois ja existia!',
