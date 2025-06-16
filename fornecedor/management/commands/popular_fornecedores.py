@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from fornecedor.models.fornecedor import Fornecedor, Cidade, Estado
 import xlrd
-from fornecedor.tasks import add
+from fornecedor.tasks import enviar_email
 
 
 class Command(BaseCommand):
@@ -95,6 +95,17 @@ class Command(BaseCommand):
         if fornecedores_a_criar:
             Fornecedor.objects.bulk_create(fornecedores_a_criar)
             print("Fornecedores cadastrados")
+            enviar_email.delay(
+            'Fornecedores Cadastrados',
+            'Olá! Seu cadastro foi um sucesso.',
+            'spcomputek@gmail.com'
+            )
         else:
             print("Fornecedores ja existentes!")
- 
+            enviar_email.delay(
+            'Fornecedores ja existentes',
+            'Olá! Seu cadastro não foi concluido,pois ja existia!',
+            'spcomputek@gmail.com'
+            )
+
+       

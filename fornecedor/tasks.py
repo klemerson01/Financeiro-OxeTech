@@ -1,13 +1,22 @@
 from celery import shared_task
+from django.core.mail import send_mail
+import time
+from django.conf import settings
 
 @shared_task
-def add(x, y):
-    import time
-    time.sleep(10)
-    print(x+y)
-    print('terminou')
-    #return 2/0
+def add():
+    print('Started task, processing...')
+    time.sleep(15)
+    print('Finished Task')
+    return True
+
 
 @shared_task
-def send_email(email):
-    return False
+def enviar_email(assunto, mensagem, destinatario):
+    send_mail(
+        subject=assunto,
+        message=mensagem,
+        from_email='nfe@computek.tech',
+        recipient_list=[destinatario],
+        fail_silently=False,
+    )

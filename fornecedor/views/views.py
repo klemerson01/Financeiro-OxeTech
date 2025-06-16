@@ -28,7 +28,6 @@ class FornecedorViewSet(APIView):
             raise Http404
 
     def get(self, request, pk=None):
-        add.delay(10, 10)
         if pk:
             fornecedor = Fornecedor.objects.get(id=pk)
             serializer = FornecedorSerializer(fornecedor)
