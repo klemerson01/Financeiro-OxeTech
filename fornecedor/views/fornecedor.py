@@ -6,7 +6,7 @@ from fornecedor.models.fornecedor import (
     Cidade,
     Estado
 )
-from fornecedor.serializers.serializers import (
+from fornecedor.serializers.fornecedor import (
     FornecedorSerializer,
     CidadeSerializer,
     EstadoSerializer
